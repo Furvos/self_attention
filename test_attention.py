@@ -1,35 +1,34 @@
 import numpy as np
 
-Q = np.array([[1, 1],
-              [0, 1]])
+queries = np.array([[1, 1],
+                    [0, 1]])
 
-K = np.array([[0, 1],
-              [2, 3]])
+keys = np.array([[0, 1],
+                 [2, 3]])
 
-V = np.array([[1, 2],
-              [3, 4]])
+values = np.array([[1, 2],
+                   [3, 4]])
 
-scores = np.dot(Q, K.T)
+attention_logits = np.dot(queries, keys.T)
 
-#d_k === dimension of the key vectors | nº of columns in K
-d_k = K.shape[1]
+key_vector_dimension = keys.shape[1]
 
-scaled_scores = scores / np.sqrt(d_k)
+scaled_attention_logits = attention_logits / np.sqrt(key_vector_dimension)
 
-def softmax(x):
-    x = x - np.max(x, axis=1, keepdims=True)
-    exp_x = np.exp(x)
-    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+def row_softmax(logits_matrix):
+    stabilized_logits = logits_matrix - np.max(logits_matrix, axis=1, keepdims=True)
+    exponentials = np.exp(stabilized_logits)
+    return exponentials / np.sum(exponentials, axis=1, keepdims=True)
 
-attention_weights = softmax(scaled_scores)
+attention_weights = row_softmax(scaled_attention_logits)
 
-self_attention_output = np.dot(attention_weights, V)
+self_attention_output = np.dot(attention_weights, values)
 
-print("QK^T =")
-print(scores)
+print("QK^T (Attention Logits) =")
+print(attention_logits)
 
-print("\nScaled QK^T =")
-print(scaled_scores)
+print("\nScaled Attention Logits =")
+print(scaled_attention_logits)
 
 print("\nAttention Weights =")
 print(attention_weights)
