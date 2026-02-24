@@ -17,7 +17,9 @@ d_k = K.shape[1]
 scaled_scores = scores / np.sqrt(d_k)
 
 def softmax(x):
-    return np.exp(x) / np.sum(np.exp(x), axis=1, keepdims=True)
+    x = x - np.max(x, axis=1, keepdims=True)
+    exp_x = np.exp(x)
+    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
 
 attention_weights = softmax(scaled_scores)
 
