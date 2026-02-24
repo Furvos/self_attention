@@ -21,6 +21,8 @@ def softmax(x):
 
 attention_weights = softmax(scaled_scores)
 
+self_attention_output = np.dot(attention_weights, V)
+
 print("QK^T =")
 print(scores)
 
@@ -29,3 +31,6 @@ print(scaled_scores)
 
 print("\nAttention Weights =")
 print(attention_weights)
+
+print("\nSelf-Attention Output =")
+print(self_attention_output)
