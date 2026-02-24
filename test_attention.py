@@ -11,10 +11,21 @@ V = np.array([[1, 2],
 
 scores = np.dot(Q, K.T)
 
-scaled_scores = scores / np.sqrt(K.shape[1])
+#d_k === dimension of the key vectors | nº of columns in K
+d_k = K.shape[1]
+
+scaled_scores = scores / np.sqrt(d_k)
+
+def softmax(x):
+    return np.exp(x) / np.sum(np.exp(x), axis=1, keepdims=True)
+
+attention_weights = softmax(scaled_scores)
+
 print("QK^T =")
 print(scores)
+
 print("\nScaled QK^T =")
 print(scaled_scores)
-print("\nK.shape[1] =", K.shape[1])
-print("\nK.shape[0] =", K.shape[0])
+
+print("\nAttention Weights =")
+print(attention_weights)
